@@ -1,0 +1,56 @@
+name: Pages
+
+# リポジトリの HTML をそのまま GitHub Pages に出す。ビルドは無い（素の HTML）ので、
+# アップロードして deploy するだけ。
+on:
+  push:
+    branches: [main]
+  # PR では検査だけを走らせ、壊れたページをマージ前に止める。
+  pull_request:
+  # 公開設定を変えた直後など、ページを触っていないときに出し直したい場合の入口。
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 走っている deploy を打ち切らない。打ち切ると公開中のページが中途半端な状態で残りうる。
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # 出す前に、これから出すページを確かめる。プライバシーポリシーの 3 点や
+  # 連絡先が欠けたまま公開されると、ストアの審査で落ちるまで気づけない。
+  # runner に入っている node で足りる（依存は無い）。
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: node check-pages.mjs
+
+  deploy:
+    # PR では出さない。検査が通ったものだけを出す。
+    if: ${{ github.event_name != 'pull_request' }}
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Pages の有効化（Source: GitHub Actions）はリポジトリ作成時に API で済ませてある
+      # （README）。ここでは GITHUB_TOKEN で有効化できないので、enablement は付けない。
+      - uses: actions/configure-pages@v5
+
+      # .git と .github は upload-pages-artifact が除く。README と検査スクリプトは出るが害は無い。
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - id: deploy
+        uses: actions/deploy-pages@v4
