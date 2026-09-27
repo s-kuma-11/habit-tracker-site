@@ -40,6 +40,25 @@ const PRIVACY_POINTS = ['server-storage', 'email-linking-only', 'export-anytime'
 /** 記録を端末の中だけに置いていた時点の 3 点。残っていれば古い約束が載ったまま。 */
 const RETIRED_POINTS = ['no-collection', 'local-only', 'export-user-initiated']
 
+/**
+ * 記録を端末の中だけに置く、という以前の約束の言い回し。どのページにも残さない。habit-tracker の
+ * store/privacy-points.mjs の DEVICE_ONLY_PHRASES と同じ一覧で、公開後に向こうの
+ * `check-domain.mjs --pages` が同じものを見る。変えるときは両方を直す。小文字にして比べる。
+ */
+const DEVICE_ONLY_PHRASES = [
+  '端末の中だけ',
+  '端末内にのみ',
+  '記録は端末の中に保存',
+  'サーバーへは送られません',
+  'サーバーへ送信することはなく',
+  '収集するデータはありません',
+  'stay on your device',
+  'only on your device',
+  'never sent to a server',
+  'never transmits',
+  'no data is collected',
+]
+
 const LANGS = ['ja', 'en']
 
 const problems = []
@@ -48,9 +67,13 @@ function fail(message) {
   problems.push(message)
 }
 
+/**
+ * ページを読む。HTML コメントは除く（書きかけの項目や経緯の注記を、載っているものとして数えない。
+ * habit-tracker の `check-domain.mjs --pages` と同じ読み方）。
+ */
 function read(path) {
   try {
-    return readFileSync(path, 'utf8')
+    return readFileSync(path, 'utf8').replace(/<!--[\s\S]*?-->/g, '')
   } catch {
     fail(`${path} が無い`)
     return null
@@ -103,10 +126,21 @@ function checkCanonical(path, html) {
   }
 }
 
+/** 以前の約束の言い回しと、以前の連絡先が残っていないか。どのページにも掛ける。 */
+function checkRetired(path, html) {
+  const text = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').toLowerCase()
+  for (const phrase of DEVICE_ONLY_PHRASES) {
+    if (text.includes(phrase.toLowerCase())) fail(`${path}: 以前の約束の言い回しが残っている: ${phrase}`)
+  }
+  if (html.includes(RETIRED_CONTACT)) fail(`${path}: 以前の連絡先（${RETIRED_CONTACT}）が残っている`)
+}
+
 /** 入口のページ。ここから 2 枚に行けないと、公開しても人が辿り着けない。 */
 function checkIndex(path) {
   const html = read(path)
   if (html === null) return
+
+  checkRetired(path, html)
 
   for (const url of REQUIRED_URLS) {
     const href = `./${basename(url)}`
@@ -121,6 +155,8 @@ function checkIndex(path) {
 function checkPrivacy(path) {
   const html = read(path)
   if (html === null) return
+
+  checkRetired(path, html)
 
   checkCanonical(path, html)
 
@@ -147,6 +183,8 @@ function checkSupport(path) {
   const html = read(path)
   if (html === null) return
 
+  checkRetired(path, html)
+
   checkCanonical(path, html)
 
   eachLang(path, html, (body, lang) => {
@@ -156,17 +194,10 @@ function checkSupport(path) {
   })
 }
 
-/** 以前の連絡先が残っていないか。 */
-function checkRetiredContact(path) {
-  const html = read(path)
-  if (html === null) return
-  if (html.includes(RETIRED_CONTACT)) fail(`${path}: 以前の連絡先（${RETIRED_CONTACT}）が残っている`)
-}
 
 checkIndex('index.html')
 checkPrivacy('privacy.html')
 checkSupport('support.html')
-for (const path of ['index.html', 'privacy.html', 'support.html']) checkRetiredContact(path)
 
 if (problems.length > 0) {
   for (const problem of problems) console.error(`NG  ${problem}`)
