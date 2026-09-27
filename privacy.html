@@ -43,11 +43,11 @@
           <strong>記録はサーバに保管します。</strong>
           登録した習慣、記録した日、項目の値、メモは、本アプリのサーバ（Supabase のデータベース）に保管します。本アプリを初めて開いたときに、名前やメールアドレスを含まない匿名の識別子を作り、記録はその識別子に結び付けて保管します。ほかの利用者があなたの記録を読み書きすることはできません。開発者は、サービスの提供と不具合の調査に必要な場合を除き、記録の中身を見ません。
           <br />
-          端末には、ログインの状態（ブラウザの保存領域、またはアプリのファイル）と、通信できないときにも本アプリを開くための画面の部品だけを置きます。記録そのものは端末に置きません。
+          端末には、ログインの状態（ブラウザの保存領域、またはアプリのファイル）と、通信できないときにも本アプリを開くための画面の部品を置きます。記録は、「書き出す」で作ったファイルを除き、端末に置きません。スマートフォンのアプリでは、端末の OS が持つバックアップ機能（iCloud バックアップ / Android の自動バックアップ）を有効にしていると、その仕組みがログインの状態や書き出したファイルを Apple または Google のサーバへ複製することがあります。複製されたデータの取り扱いは各社のプライバシーポリシーに従います。
         </li>
         <li data-point="email-linking-only">
           <strong>メールアドレスは、記録に戻るためだけに使います。</strong>
-          メールアドレスを受け取るのは、設定の「別の端末でも見る」で登録したときだけです。登録したメールアドレスは、ログインのためのリンクとコードを送ることと、ほかの端末やブラウザから同じ記録を開けるように記録と結び付けることにだけ使います。お知らせや広告には使いません。登録しなくても本アプリは使えます。
+          メールアドレスを受け取るのは、設定の「別の端末でも見る」で入力したとき（登録するときと、登録したアドレスでほかの端末からログインするとき）だけです。受け取ったメールアドレスは、ログインのためのリンクとコードを送ることと、ほかの端末やブラウザから同じ記録を開けるように記録と結び付けることにだけ使います。お知らせや広告には使いません。登録しなくても本アプリは使えます。
         </li>
         <li data-point="export-anytime">
           <strong>記録はいつでも書き出せます。</strong>
@@ -67,7 +67,7 @@
 
       <h2>記録を消したいとき</h2>
       <p>
-        習慣は、習慣の画面から記録ごと削除できます。サーバに保管している記録をすべて消したいとき、またはメールアドレスの登録を取り消したいときは、下の問い合わせ先までご連絡ください。消せるのは、登録したメールアドレスや、まだその記録を開ける端末から、あなたの記録だと確かめられるものです。メールアドレスを登録しないままブラウザのデータを消すなどして開けなくなった記録は、サーバには残りますが、匿名の識別子しか結び付いていないため、誰の記録か確かめられず、個別に消すことができません。
+        習慣は、習慣の画面から記録ごと削除できます。サーバに保管している記録をすべて消したいとき、またはメールアドレスの登録を取り消したいときは、下の問い合わせ先までご連絡ください。問い合わせで消せるのは、登録したメールアドレスで、あなたの記録だと確かめられるものです。メールアドレスを登録していない記録は匿名の識別子にしか結び付いておらず、誰の記録か確かめられないため、問い合わせでは消せません。本アプリの中で習慣を削除してください。登録しないままブラウザのデータを消したり、アプリを削除したりして開けなくなった記録はサーバに残りますが、同じ理由で個別に消すことができません。
       </p>
 
       <p>本ポリシーを変更する場合は、このページを更新します。</p>
@@ -81,11 +81,11 @@
           <strong>Your records are kept on a server.</strong>
           The habits you create, the days you record, field values, and memos are stored on the app's server (a Supabase database). The first time you open the app, it creates an anonymous identifier that contains no name or email address, and your records are stored under that identifier. Other users cannot read or write your records. The developer does not look at the contents of your records except where needed to run the service or investigate a problem.
           <br />
-          Your device keeps only your sign-in state (in the browser's storage or in the app's own file) and the parts of the app needed to open it while offline. Your records themselves are not stored on the device.
+          Your device keeps your sign-in state (in the browser's storage or in the app's own file) and the parts of the app needed to open it while offline. Apart from files you create with “Export”, your records are not kept on the device. In the phone app, if your device's own backup is enabled (iCloud Backup on iOS, Auto Backup on Android), that system may copy your sign-in state and exported files to Apple's or Google's servers; the copied data is handled under those companies' privacy policies.
         </li>
         <li data-point="email-linking-only">
           <strong>Your email address is used only to get you back to your records.</strong>
-          The app receives an email address only when you register one under “Use on another device” in Settings. It is used only to send you sign-in links and codes, and to link your records to it so you can open the same records from another device or browser. It is never used for announcements or ads. You can use the app without registering.
+          The app receives an email address only when you enter one under “Use on another device” in Settings — when registering it, and when signing in with it on another device. It is used only to send you sign-in links and codes, and to link your records to it so you can open the same records from another device or browser. It is never used for announcements or ads. You can use the app without registering.
         </li>
         <li data-point="export-anytime">
           <strong>You can export your records at any time.</strong>
@@ -105,7 +105,7 @@
 
       <h2>Deleting your records</h2>
       <p>
-        You can delete a habit, together with its records, from the habit's screen. To delete all of your records on the server, or to remove a registered email address, contact us at the address below. We can delete records that we can confirm are yours, through your registered email address or a device that can still open them. Records you can no longer open — for example after clearing your browser's data without registering an email address — stay on the server, but because they are tied only to an anonymous identifier, we cannot tell whose they are and cannot delete them individually.
+        You can delete a habit, together with its records, from the habit's screen. To delete all of your records on the server, or to remove a registered email address, contact us at the address below. We can delete, on request, records that we can confirm are yours through your registered email address. Records with no registered email address are tied only to an anonymous identifier, so we cannot tell whose they are and cannot delete them on request; delete your habits in the app instead. Records you can no longer open — for example after clearing your browser's data or deleting the app without registering — stay on the server, and for the same reason cannot be deleted individually.
       </p>
 
       <p>If this policy changes, this page will be updated.</p>
