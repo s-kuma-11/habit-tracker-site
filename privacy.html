@@ -39,21 +39,37 @@
       <h2>プライバシーポリシー</h2>
       <p>Habit Tracker（以下「本アプリ」）の個人情報の取り扱いについて、次のとおり定めます。</p>
       <ul>
-        <li data-point="no-collection">
-          <strong>収集するデータはありません。</strong>
-          本アプリは利用者の個人情報を収集しません。アカウントの作成もログインも不要で、氏名・メールアドレス・端末の識別子・位置情報のいずれも取得しません。利用状況の分析や広告のための計測も行いません。
-        </li>
-        <li data-point="local-only">
-          <strong>記録は端末内に保存されます。</strong>
-          登録した習慣と記録は、本アプリが端末内に置くファイルにのみ保存されます。本アプリがそれを開発者や第三者のサーバーへ送信することはなく、開発者がその内容を見ることはできません。本アプリを削除すると、端末内のそのファイルは削除されます。
+        <li data-point="server-storage">
+          <strong>記録はサーバに保管します。</strong>
+          登録した習慣、記録した日、項目の値、メモは、本アプリのサーバ（Supabase のデータベース）に保管します。本アプリを初めて開いたときに、名前やメールアドレスを含まない匿名の識別子を作り、記録はその識別子に結び付けて保管します。ほかの利用者があなたの記録を読み書きすることはできません。開発者は、サービスの提供と不具合の調査に必要な場合を除き、記録の中身を見ません。
           <br />
-          ただし、端末の OS が持つバックアップ機能（iCloud バックアップ / Android の自動バックアップ）を有効にしている場合、その仕組みが本アプリのファイルを Apple または Google のサーバーへ複製することがあります。これは OS の機能によるもので、複製されたデータの取り扱いは各社のプライバシーポリシーに従います。本アプリからその内容を参照することはできません。バックアップに含めたくない場合は、端末の設定でバックアップを無効にしてください。なお、バックアップに複製された分は本アプリを削除しても消えず、復元すると戻ります。消したい場合は端末または各社のアカウント設定から操作してください。
+          端末には、ログインの状態（ブラウザの保存領域、またはアプリのファイル）と、通信できないときにも本アプリを開くための画面の部品を置きます。記録は、「書き出す」で作ったファイルを除き、端末に置きません。スマートフォンのアプリでは、端末の OS が持つバックアップ機能（iCloud バックアップ / Android の自動バックアップ）を有効にしていると、その仕組みがログインの状態や書き出したファイルを Apple または Google のサーバへ複製することがあります。複製されたデータの取り扱いは各社のプライバシーポリシーに従います。
         </li>
-        <li data-point="export-user-initiated">
-          <strong>書き出しは利用者の操作でだけ起きます。</strong>
-          設定画面の「書き出す」を押したときにかぎり、記録を含むファイルが作られ、端末の共有機能に渡されます。渡した先（保存先のアプリやサービス）での取り扱いは、そのサービスの規約に従います。利用者が操作しない限り、本アプリが記録を外に出すことはありません。
+        <li data-point="email-linking-only">
+          <strong>メールアドレスは、記録に戻るためだけに使います。</strong>
+          メールアドレスを受け取るのは、設定の「別の端末でも見る」で入力したとき（登録するときと、登録したアドレスでほかの端末からログインするとき）だけです。受け取ったメールアドレスは、ログインのためのリンクとコードを送ることと、ほかの端末やブラウザから同じ記録を開けるように記録と結び付けることにだけ使います。お知らせや広告には使いません。登録しなくても本アプリは使えます。
+        </li>
+        <li data-point="export-anytime">
+          <strong>記録はいつでも書き出せます。</strong>
+          設定の「書き出す」から、いつでも、すべての習慣と記録を JSON のファイルに書き出せます。書き出したファイルを渡した先（保存先のアプリやサービス）での取り扱いは、そのサービスの規約に従います。「読み込む」でファイルを読み込むと、いま入っている記録はそのファイルの内容に置き換わります。
         </li>
       </ul>
+
+      <h2>利用する外部のサービス</h2>
+      <p>本アプリは、次のサービスを使って動いています。解析や広告のための計測は行いません。</p>
+      <ul>
+        <li>Supabase: 記録の保管とログイン</li>
+        <li>Vercel: 本アプリ（Web 版）の配信</li>
+        <li>Cloudflare: 自動で利用者を大量に作る操作を防ぐ確認（Turnstile。Web 版）、ドメインと問い合わせ先のメールの転送</li>
+        <li>Resend: ログインのためのメールの送信</li>
+      </ul>
+      <p>これらのサービスは、通信の記録（IP アドレスなど）をそれぞれの規約に従って扱います。</p>
+
+      <h2>記録を消したいとき</h2>
+      <p>
+        習慣は、習慣の画面から記録ごと削除できます。サーバに保管している記録をすべて消したいとき、またはメールアドレスの登録を取り消したいときは、下の問い合わせ先までご連絡ください。問い合わせで消せるのは、登録したメールアドレスで、あなたの記録だと確かめられるものです。メールアドレスを登録していない記録は匿名の識別子にしか結び付いておらず、誰の記録か確かめられないため、問い合わせでは消せません。本アプリの中で習慣を削除してください。登録しないままブラウザのデータを消したり、アプリを削除したりして開けなくなった記録はサーバに残りますが、同じ理由で個別に消すことができません。
+      </p>
+
       <p>本ポリシーを変更する場合は、このページを更新します。</p>
     </section>
 
@@ -61,28 +77,44 @@
       <h2>Privacy Policy</h2>
       <p>This policy describes how Habit Tracker (“the app”) handles personal information.</p>
       <ul>
-        <li data-point="no-collection">
-          <strong>No data is collected.</strong>
-          The app collects no personal information. There is no account and no sign-in, and the app does not obtain your name, email address, device identifiers, or location. It performs no analytics and no advertising measurement.
-        </li>
-        <li data-point="local-only">
-          <strong>Your records are stored on your device.</strong>
-          The habits and records you create are saved only in a file the app keeps on your device. The app never transmits that file to the developer or to any third party, and the developer cannot see its contents. Deleting the app removes that file from your device.
+        <li data-point="server-storage">
+          <strong>Your records are kept on a server.</strong>
+          The habits you create, the days you record, field values, and memos are stored on the app's server (a Supabase database). The first time you open the app, it creates an anonymous identifier that contains no name or email address, and your records are stored under that identifier. Other users cannot read or write your records. The developer does not look at the contents of your records except where needed to run the service or investigate a problem.
           <br />
-          If your device's own backup is enabled (iCloud Backup on iOS, Auto Backup on Android), that system may copy the app's file to Apple's or Google's servers. That copying is done by the operating system, and the copied data is handled under those companies' privacy policies; the app cannot read it. Turn the backup off in your device settings if you do not want the file included. Note that a copy already held in a backup is not removed by deleting the app, and restoring the backup brings it back; remove it from your device or account settings if you want it gone.
+          Your device keeps your sign-in state (in the browser's storage or in the app's own file) and the parts of the app needed to open it while offline. Apart from files you create with “Export”, your records are not kept on the device. In the phone app, if your device's own backup is enabled (iCloud Backup on iOS, Auto Backup on Android), that system may copy your sign-in state and exported files to Apple's or Google's servers; the copied data is handled under those companies' privacy policies.
         </li>
-        <li data-point="export-user-initiated">
-          <strong>Exporting happens only when you ask for it.</strong>
-          Only when you tap “Export” in Settings does the app create a file containing your records and hand it to your device's share sheet. Whatever you share it with is then governed by that service's own terms. The app never sends your records anywhere on its own.
+        <li data-point="email-linking-only">
+          <strong>Your email address is used only to get you back to your records.</strong>
+          The app receives an email address only when you enter one under “Use on another device” in Settings — when registering it, and when signing in with it on another device. It is used only to send you sign-in links and codes, and to link your records to it so you can open the same records from another device or browser. It is never used for announcements or ads. You can use the app without registering.
+        </li>
+        <li data-point="export-anytime">
+          <strong>You can export your records at any time.</strong>
+          “Export” in Settings writes all of your habits and records to a JSON file, at any time. Whatever you share that file with is then governed by that service's own terms. Loading a file with “Import” replaces the records you have now with the contents of the file.
         </li>
       </ul>
+
+      <h2>Services the app uses</h2>
+      <p>The app runs on the following services. It performs no analytics and no advertising measurement.</p>
+      <ul>
+        <li>Supabase: storing records and signing in</li>
+        <li>Vercel: serving the app (web version)</li>
+        <li>Cloudflare: a check that blocks automated mass sign-ups (Turnstile, web version), the domain, and forwarding of the contact address</li>
+        <li>Resend: sending sign-in emails</li>
+      </ul>
+      <p>These services handle connection records (such as IP addresses) under their own terms.</p>
+
+      <h2>Deleting your records</h2>
+      <p>
+        You can delete a habit, together with its records, from the habit's screen. To delete all of your records on the server, or to remove a registered email address, contact us at the address below. We can delete, on request, records that we can confirm are yours through your registered email address. Records with no registered email address are tied only to an anonymous identifier, so we cannot tell whose they are and cannot delete them on request; delete your habits in the app instead. Records you can no longer open — for example after clearing your browser's data or deleting the app without registering — stay on the server, and for the same reason cannot be deleted individually.
+      </p>
+
       <p>If this policy changes, this page will be updated.</p>
     </section>
 
     <footer>
       <p>
         お問い合わせ / Contact:
-        <a href="https://github.com/s-kuma-11/habit-tracker-site/issues">GitHub Issues</a>
+        <a href="mailto:hello@habitgrass.com">hello@habitgrass.com</a>
       </p>
     </footer>
   </body>
