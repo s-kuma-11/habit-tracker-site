@@ -22,13 +22,23 @@ const REQUIRED_URLS = [
 ]
 
 /**
- * 連絡先。匿名の訪問者（ストアの審査担当）が開けることが要件なので、public なこのリポジトリの
- * Issues を指す。アプリ本体のリポジトリは private で、そちらの Issues は匿名からは 404 に見える。
+ * 連絡先。独自ドメインのアドレス（habit-tracker の docs/store/contact-email.md）で、匿名の訪問者
+ * （ストアの審査担当）でも使える。以前はこのリポジトリの Issues を指していた（HT-149 で差し替え）。
  */
-const CONTACT_URL = 'https://github.com/s-kuma-11/habit-tracker-site/issues'
+const CONTACT_URL = 'mailto:hello@habitgrass.com'
 
-/** プライバシーポリシーが ja / en の両方で述べる 3 点。 */
-const PRIVACY_POINTS = ['no-collection', 'local-only', 'export-user-initiated']
+/** 以前の連絡先。残っていると、どちらに連絡すればよいか読み手が迷う。 */
+const RETIRED_CONTACT = 'https://github.com/s-kuma-11/habit-tracker-site/issues'
+
+/**
+ * プライバシーポリシーが ja / en の両方で述べる 3 点。記録をサーバに保管する・メールアドレスは
+ * 記録の結び付けにだけ使う・いつでも JSON で全件書き出せる（HT-149。habit-tracker の
+ * store/privacy-points.mjs と同じ名前）。
+ */
+const PRIVACY_POINTS = ['server-storage', 'email-linking-only', 'export-anytime']
+
+/** 記録を端末の中だけに置いていた時点の 3 点。残っていれば古い約束が載ったまま。 */
+const RETIRED_POINTS = ['no-collection', 'local-only', 'export-user-initiated']
 
 const LANGS = ['ja', 'en']
 
@@ -120,6 +130,11 @@ function checkPrivacy(path) {
         fail(`${path}: lang="${lang}" に ${point} の記述が無い`)
       }
     }
+    for (const point of RETIRED_POINTS) {
+      if (body.includes(`data-point="${point}"`)) {
+        fail(`${path}: lang="${lang}" に以前の記述（${point}）が残っている`)
+      }
+    }
   })
 
   // 連絡先は言語をまたいだ footer にある。
@@ -141,9 +156,17 @@ function checkSupport(path) {
   })
 }
 
+/** 以前の連絡先が残っていないか。 */
+function checkRetiredContact(path) {
+  const html = read(path)
+  if (html === null) return
+  if (html.includes(RETIRED_CONTACT)) fail(`${path}: 以前の連絡先（${RETIRED_CONTACT}）が残っている`)
+}
+
 checkIndex('index.html')
 checkPrivacy('privacy.html')
 checkSupport('support.html')
+for (const path of ['index.html', 'privacy.html', 'support.html']) checkRetiredContact(path)
 
 if (problems.length > 0) {
   for (const problem of problems) console.error(`NG  ${problem}`)
